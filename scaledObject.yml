@@ -2,12 +2,12 @@ apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
   name: nginx-deployment
-  namespace: default
+  namespace: workshop
 spec:
   scaleTargetRef:
     apiVersion:    apps/v1        # Optional. Default: apps/v1
     kind:          Deployment     # Optional. Default: Deployment
-    name:          weather-app     # Mandatory. Must be in the same namespace as the ScaledObject
+    name:          nginx-app       # Mandatory. Must be in the same namespace as the ScaledObject
   pollingInterval:  5                    # Optional. Default: 5 seconds
   cooldownPeriod:   300                  # Optional. Default: 300 seconds
   minReplicaCount:  0                  # Optional. Default: 0
@@ -15,11 +15,11 @@ spec:
   fallback:                                        # Optional. Section to specify fallback options
     failureThreshold: 3                            # Mandatory if fallback section is included
     replicas: 1                                    # Mandatory if fallback section is included
-  triggers:
+triggers:
   - type: cron
     metadata:
-      # Required
-      timezone: Asia/Kolkata  # The acceptable values would be a value from the IANA Time Zone Database.
-      start: 30 * * * *       # Every hour on the nth minute you mentioned
-      end: 45 * * * *         # Every hour on the nth minute you mentioned
+      timezone: Asia/Kolkata
+      start: "* * * * *"   # every minute
+      end: "59 * * * *"  # until the end of the hour
       desiredReplicas: "5"
+
